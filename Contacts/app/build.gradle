@@ -26,4 +26,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation files('libs/backendless.jar')
     implementation 'com.github.d-max:spots-dialog:0.4@aar'
+    implementation 'com.backendless:backendless:5.2.4'
 }
