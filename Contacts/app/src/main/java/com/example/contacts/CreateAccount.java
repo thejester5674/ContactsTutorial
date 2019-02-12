@@ -32,7 +32,7 @@ public class CreateAccount extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         String retype = etRePassword.getText().toString().trim();
 
-        if (name.equals("") || surname.equals("") || email.equals("") ||password.equals("") ||retype.equals("") ||)
+        if (name.equals("") || surname.equals("") || email.equals("") ||password.equals("") ||retype.equals("") )
         {
             Toast.makeText(CreateAccount.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
         }
