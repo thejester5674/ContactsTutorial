@@ -53,11 +53,12 @@ public class Login extends AppCompatActivity {
 String username = etUsername.getText().toString().trim();
 String password = etPassword.getText().toString().trim();
 
-if (username.equals("") || password.equals(""));
+        if (username.equals("") || password.equals(""))
         {
             Toast.makeText(Login.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
         }
-        else {
+        else
+        {
             if (connectionAvailable())
             {
                 progressDialog = new SpotsDialog(Login.this, R.style.Custom);
@@ -65,7 +66,7 @@ if (username.equals("") || password.equals(""));
 
                 Backendless.UserService.login(username, password, new AsyncCallback<BackendlessUser>() {
                     @Override
-                    public void handleResponse(BackendlessUser response) {
+                    public void handleResponse(BackendlessUser backendlessUser) {
 
                         Toast.makeText(Login.this, backendlessUser.getEmail() + " successfully logged in!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, ContactList.class);
