@@ -3,15 +3,24 @@ package com.example.contacts;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+
+import dmax.dialog.SpotsDialog;
+
 public class CreateAccount extends AppCompatActivity {
 
     EditText etName, etSurname,etMail, etPassword, etRePassword;
+    AlertDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +53,32 @@ public class CreateAccount extends AppCompatActivity {
         {
             if (connectionAvailable())
             {
+                BackendlessUser user = new BackendlessUser();
+                user.setProperty("email", email);
+                user.setProperty("name", name + " " + surname);
+                user.setPassword(password);
 
+                progressDialog = new SpotsDialog(CreateAccount.this, R.style.Custom);
+                progressDialog.show();
+
+                Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
+                    @Override
+                    public void handleResponse(BackendlessUser response) {
+                        Toast.makeText(CreateAccount.this, "Account created successfully", Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                        CreateAccount.this.finish();
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault backendlessFault) {
+                        Toast.makeText(CreateAccount.this, "Error:" + backendlessFault.getMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialog.dismiss();
+                    }
+                });
             }
-            else{}
+            else{
+                Toast.makeText(CreateAccount.this, "Please first connect to the internet!", Toast.LENGTH_SHORT).show();
+            }
         }
 
     }
