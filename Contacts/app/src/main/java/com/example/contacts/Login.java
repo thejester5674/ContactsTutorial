@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,7 +20,7 @@ import com.backendless.exceptions.BackendlessFault;
 import dmax.dialog.SpotsDialog;
 
 public class Login extends AppCompatActivity {
-    EditText etUsername, etPassword;
+    EditText etUsername, etPassword, etMail;
     AlertDialog progressDialog;
 
 
@@ -48,19 +49,14 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    public void btnLogin(View v)
-    {
-String username = etUsername.getText().toString().trim();
-String password = etPassword.getText().toString().trim();
+    public void btnLogin(View v) {
+        String username = etUsername.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
-        if (username.equals("") || password.equals(""))
-        {
+        if (username.equals("") || password.equals("")) {
             Toast.makeText(Login.this, "Please enter all fields!", Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            if (connectionAvailable())
-            {
+        } else {
+            if (connectionAvailable()) {
                 progressDialog = new SpotsDialog(Login.this, R.style.Custom);
                 progressDialog.show();
 
@@ -82,25 +78,37 @@ String password = etPassword.getText().toString().trim();
 
                     }
                 }, true);
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Please check your  internet connection!", Toast.LENGTH_SHORT).show();
             }
 
-    }
+        }
     }
 
-    public void btnCreateAccount(View v)
-    {
+    public void btnCreateAccount(View v) {
         Intent intent = new Intent(Login.this, CreateAccount.class);
         startActivity(intent);
     }
 
-    public void btnResetPassword(View v)
-    {
+    public void btnResetPassword(View v) {
+        if (connectionAvailable())
+        {
+            LayoutInflater inflater = getLayoutInflater();
+            final View view = inflater.inflate(R.layout.password_reset, null);
 
+etMail = (EditText) view.findViewById(R.id.etMail);
+
+AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+dialog.setTitle("Reset Password");
+dialog.setView(view);
+        }
+    else
+
+    {
+        Toast.makeText(this, "Please connect to the internet!", Toast.LENGTH_SHORT).show();
     }
 
+}
     private boolean connectionAvailable()
     {
         boolean connected = false;
